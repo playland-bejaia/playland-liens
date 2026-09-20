@@ -407,7 +407,7 @@ document.getElementById('bg-file').addEventListener('change', async function(e){
   status.textContent = "Envoi de la photo...";
   const path = 'bg-' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g,'');
   const { error } = await client.storage.from('assets').upload(path, file, { upsert: true });
-  if (error){ status.textContent = "Erreur lors de l'envoi de la photo."; return; }
+  if (error){ status.textContent = "Erreur : " + (error.message || "envoi impossible."); return; }
   const { data: pub } = client.storage.from('assets').getPublicUrl(path);
   currentContent.bg_image_url = pub.publicUrl;
   document.getElementById('bg-preview').style.backgroundImage = "url('" + pub.publicUrl + "')";

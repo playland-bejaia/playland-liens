@@ -404,6 +404,11 @@ document.getElementById('bg-file').addEventListener('change', async function(e){
   const file = e.target.files[0];
   if (!file) return;
   const status = document.getElementById('appearance-status');
+  const { data: sessionData } = await client.auth.getSession();
+  if (!sessionData.session){
+    status.textContent = "Session expirée — déconnecte-toi puis reconnecte-toi, ensuite réessaie.";
+    return;
+  }
   status.textContent = "Envoi de la photo...";
   const path = 'bg-' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g,'');
   const { error } = await client.storage.from('assets').upload(path, file, { upsert: true });

@@ -404,8 +404,9 @@ document.getElementById('bg-file').addEventListener('change', async function(e){
   const file = e.target.files[0];
   if (!file) return;
   const status = document.getElementById('appearance-status');
-  const { data: sessionData } = await client.auth.getSession();
-  if (!sessionData.session){
+  status.textContent = "Vérification de la connexion...";
+  const { data: userData, error: userErr } = await client.auth.getUser();
+  if (userErr || !userData.user){
     status.textContent = "Session expirée — déconnecte-toi puis reconnecte-toi, ensuite réessaie.";
     return;
   }
